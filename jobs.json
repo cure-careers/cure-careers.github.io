@@ -1,0 +1,646 @@
+{
+ "updated": "2026-10-05",
+ "contact": {
+  "office": "Career Services",
+  "where": "CURE, 333 Westchester Avenue, Suite W101, White Plains, NY",
+  "how": "Stop by Career Services or ask your Program Director to connect you with the Career Services Manager."
+ },
+ "jobs": [
+  {
+   "id": "nyu-23047434",
+   "title": "Ultrasound Technologist, Part Time Nights",
+   "employer": "NYU Langone Health",
+   "facility": "NYU Langone, Manhattan",
+   "city": "New York",
+   "state": "NY",
+   "town": "Manhattan, NY",
+   "lat": 40.7421,
+   "lng": -73.9739,
+   "region": "nyc",
+   "mods": [
+    "general"
+   ],
+   "type": "Part time",
+   "shift": "Nights, Sunday and Monday, 12a to 8a",
+   "pay": "$60.02 to $67.13 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RVT"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.nyulangone.org/job/23047434/ultrasound-technologist-manhattan-part-time-night-shift-new-york-ny/",
+   "employerUrl": "https://jobs.nyulangone.org/",
+   "notes": "ARDMS registration and a certificate from an approved ultrasound or vascular program are minimum requirements; RDMS and RVT preferred.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "nyu-21912408",
+   "title": "Ultrasound Technologist, Registered, 18.75 Hours",
+   "employer": "NYU Langone Health",
+   "facility": "NYU Langone Hospital Long Island",
+   "city": "Mineola",
+   "state": "NY",
+   "town": "Mineola / Garden City, NY",
+   "lat": 40.7409,
+   "lng": -73.6423,
+   "region": "li",
+   "mods": [
+    "general"
+   ],
+   "type": "Part time",
+   "shift": "Weekends: Saturday 10a to 8p, Sunday 8a to 6p",
+   "pay": "$54.63 to $60.80 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RVT"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.nyulangone.org/job/21912408/ultrasound-technologist-registered-18-75-hours-per-week-hospital-mineola-ny/",
+   "employerUrl": "https://jobs.nyulangone.org/",
+   "notes": "Requires a diploma from an accredited two year ultrasound program and registration as a diagnostic sonographer or vascular technologist.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "hmh-77048705424",
+   "title": "Ultrasound Technologist, Maternal Fetal Medicine",
+   "employer": "Hackensack Meridian Health",
+   "facility": "Hackensack University Medical Center",
+   "city": "Hackensack",
+   "state": "NJ",
+   "town": "Hackensack, NJ",
+   "lat": 40.8838,
+   "lng": -74.0566,
+   "region": "nj",
+   "mods": [
+    "obgyn"
+   ],
+   "type": "Full time",
+   "shift": "Day shift",
+   "pay": "Not posted",
+   "reg": "required",
+   "creds": [
+    "RDMS"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.hackensackmeridianhealth.org/job/hackensack/ultrasound-technologist-mfm-full-time/19511/77048705424",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "notes": "RDMS required. Nuchal translucency certification preferred.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "hmh-73248430928",
+   "title": "Vascular Technologist",
+   "employer": "Hackensack Meridian Health",
+   "facility": "Hackensack University Medical Center",
+   "city": "Hackensack",
+   "state": "NJ",
+   "town": "Hackensack, NJ",
+   "lat": 40.8838,
+   "lng": -74.0566,
+   "region": "nj",
+   "mods": [
+    "vascular"
+   ],
+   "type": "Full time",
+   "shift": "Day shift",
+   "pay": "Not posted",
+   "reg": "required",
+   "creds": [
+    "RVT"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.hackensackmeridianhealth.org/job/hackensack/vascular-technologist-full-time/19511/73248430928",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "notes": "RVT required; RVS preferred. Prior hospital experience preferred, not required.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "hmh-95638945072",
+   "title": "Vascular Technologist, Per Diem",
+   "employer": "Hackensack Meridian Health",
+   "facility": "JFK University Medical Center",
+   "city": "Edison",
+   "state": "NJ",
+   "town": "Edison / Iselin, NJ",
+   "lat": 40.539,
+   "lng": -74.3685,
+   "region": "nj",
+   "mods": [
+    "vascular"
+   ],
+   "type": "Per diem",
+   "shift": "Evening shift",
+   "pay": "From $37.69 per hour",
+   "reg": "required",
+   "creds": [
+    "RVT",
+    "RVS"
+   ],
+   "newgrad": true,
+   "url": "https://jobs.hackensackmeridianhealth.org/job/edison/vascular-technologist-per-diem/19511/95638945072",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "notes": "RVT or RVS required. Accepts one to two years of experience or a new graduate of an accredited program.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "hmh-95104762944",
+   "title": "Ultrasound Technologist, Health and Wellness Center",
+   "employer": "Hackensack Meridian Health",
+   "facility": "Carrier Clinic",
+   "city": "Iselin",
+   "state": "NJ",
+   "town": "Edison / Iselin, NJ",
+   "lat": 40.5754,
+   "lng": -74.3224,
+   "region": "nj",
+   "mods": [
+    "general",
+    "vascular"
+   ],
+   "type": "Per diem",
+   "shift": "Weekends, Saturdays 8a to 5p preferred",
+   "pay": "From $44.30 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RVT",
+    "RT(S)",
+    "RVS"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.hackensackmeridianhealth.org/job/iselin/ultrasound-technologist-health-and-wellness-center/19511/95104762944",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "notes": "One of RVT, RDMS, RT(S) or RVS required. One year of clinical ultrasound experience preferred.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "hmh-98047631472",
+   "title": "Ultrasound Technologist, Per Diem",
+   "employer": "Hackensack Meridian Health",
+   "facility": "HMH Physician Services",
+   "city": "Asbury Park",
+   "state": "NJ",
+   "town": "Asbury Park / Neptune, NJ",
+   "lat": 40.2204,
+   "lng": -74.0121,
+   "region": "nj",
+   "mods": [
+    "general"
+   ],
+   "type": "Per diem",
+   "shift": "Day shift",
+   "pay": "From $44.30 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.hackensackmeridianhealth.org/job/asbury-park/ultrasound-technologist/19511/98047631472",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "notes": "RDMS and BLS required. One year of ultrasound experience preferred.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "optum-92872100080",
+   "title": "Ultrasound Technologist II, Part Time OB/GYN",
+   "employer": "Optum NY",
+   "facility": "Optum NY, Syosset",
+   "city": "Syosset",
+   "state": "NY",
+   "town": "Syosset / Hicksville, NY",
+   "lat": 40.8262,
+   "lng": -73.5021,
+   "region": "li",
+   "mods": [
+    "obgyn"
+   ],
+   "type": "Part time",
+   "shift": "Not posted",
+   "pay": "$28.94 to $51.63 per hour (full time basis), sign on bonus advertised",
+   "reg": "eligible",
+   "creds": [
+    "RDMS"
+   ],
+   "newgrad": true,
+   "url": "https://careers.unitedhealthgroup.com/job/syosset/optum-ny-pt-obgyn-ultrasound-technologist/34088/92872100080",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "notes": "ARDMS certification or the ability to obtain it. Completion of an accredited ultrasonography course required.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "northwell-23485793",
+   "title": "Ultrasound Technologist",
+   "employer": "Northwell Health",
+   "facility": "Northwell Physician Partners, Lenox Hill",
+   "city": "New York",
+   "state": "NY",
+   "town": "Manhattan, NY",
+   "lat": 40.7739,
+   "lng": -73.9605,
+   "region": "nyc",
+   "mods": [
+    "general",
+    "obgyn"
+   ],
+   "type": "Full time",
+   "shift": "Days, 8:30a to 5p",
+   "pay": "$85,090 to $147,220 per year",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RDCS",
+    "RCS",
+    "RVT",
+    "RVS",
+    "RT(S)"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.northwell.edu/job-3/23485793/ultrasound-technologist-new-york-ny/",
+   "employerUrl": "https://jobs.northwell.edu/",
+   "notes": "One registry credential required, plus one to three years of experience. Maternal fetal medicine experience preferred.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "northwell-23281902",
+   "title": "Ultrasound Technologist, Per Diem",
+   "employer": "Northwell Health",
+   "facility": "North Fork Radiology",
+   "city": "Riverhead",
+   "state": "NY",
+   "town": "Riverhead, NY",
+   "lat": 40.917,
+   "lng": -72.662,
+   "region": "li",
+   "mods": [
+    "general"
+   ],
+   "type": "Per diem",
+   "shift": "Weekdays and weekends, 8a to 4:30p",
+   "pay": "$67.39 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RDCS",
+    "RCS",
+    "RVT",
+    "RVS",
+    "RT(S)",
+    "RT(VS)"
+   ],
+   "newgrad": false,
+   "url": "https://jobs.northwell.edu/job-3/23281902/ultrasound-technologist-riverhead-ny/",
+   "employerUrl": "https://jobs.northwell.edu/",
+   "notes": "One registry credential and one to three years of experience required.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "optum-96162114320",
+   "title": "Ultrasound Technologist II",
+   "employer": "Optum NY",
+   "facility": "Optum NY/NJ, Poughkeepsie",
+   "city": "Poughkeepsie",
+   "state": "NY",
+   "town": "Poughkeepsie, NY",
+   "lat": 41.7004,
+   "lng": -73.921,
+   "region": "whv",
+   "mods": [
+    "general"
+   ],
+   "type": "Full time",
+   "shift": "Not posted",
+   "pay": "$41.50 to $62.25 per hour, sign on bonus advertised",
+   "reg": "eligible",
+   "creds": [
+    "RDMS"
+   ],
+   "newgrad": false,
+   "url": "https://careers.unitedhealthgroup.com/job/poughkeepsie/ultrasound-technologist/34088/96162114320",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "notes": "ARDMS certification or the ability to obtain it.",
+   "source": "Employer careers site",
+   "posted": "2026-08-27",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "optum-96887683248",
+   "title": "Echo Technologist",
+   "employer": "Optum NY",
+   "facility": "Putnam Hospital Center and Katonah Cardiology",
+   "city": "Katonah",
+   "state": "NY",
+   "town": "Katonah, NY",
+   "lat": 41.259,
+   "lng": -73.6851,
+   "region": "whv",
+   "mods": [
+    "echo"
+   ],
+   "type": "Full time",
+   "shift": "Monday at Putnam Hospital; Tuesday to Friday at Katonah Cardiology",
+   "pay": "$29 to $52 per hour, sign on bonus advertised",
+   "reg": "required",
+   "creds": [
+    "RDCS",
+    "RCS"
+   ],
+   "newgrad": false,
+   "url": "https://careers.unitedhealthgroup.com/job/katonah/echo-technologist/34088/96887683248",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "notes": "ARDMS or CCI cardiac registration required.",
+   "source": "Employer careers site",
+   "posted": "2026-06-24",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "optum-93760954992",
+   "title": "Echocardiographer, Part Time",
+   "employer": "Optum NY",
+   "facility": "Crystal Run Healthcare",
+   "city": "West Nyack",
+   "state": "NY",
+   "town": "West Nyack / Nyack, NY",
+   "lat": 41.0965,
+   "lng": -73.9732,
+   "region": "whv",
+   "mods": [
+    "echo"
+   ],
+   "type": "Part time",
+   "shift": "Not posted",
+   "pay": "$28.94 to $51.63 per hour (full time basis)",
+   "reg": "eligible",
+   "creds": [
+    "RDCS",
+    "RCS"
+   ],
+   "newgrad": true,
+   "url": "https://careers.unitedhealthgroup.com/job/west-nyack/echocardiographer-part-time-crystal-run-healthcare/34088/93760954992",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "notes": "RDCS or RCS required; new graduates of a cardiac ultrasound program must earn the credential within one year of graduation.",
+   "source": "Employer careers site",
+   "posted": "2026-04-09",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "ochsner-89346150480",
+   "title": "Sonographer, New Grad",
+   "employer": "Ochsner Health",
+   "facility": "Ochsner Medical Center",
+   "city": "New Orleans",
+   "state": "LA",
+   "lat": 29.9511,
+   "lng": -90.0715,
+   "region": "reloc",
+   "mods": [
+    "general"
+   ],
+   "type": "Full time",
+   "shift": "Not posted",
+   "pay": "Sign on bonus up to $20,000 advertised",
+   "reg": "eligible",
+   "creds": [
+    "RDMS"
+   ],
+   "newgrad": true,
+   "url": "https://careers.ochsner.org/job/new-orleans/sonographer-new-grad-all-locations/47519/89346150480",
+   "employerUrl": "https://careers.ochsner.org/",
+   "notes": "New graduate role. RDMS must be earned within one year of hire.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "id": "atrium-23902829",
+   "title": "Ultrasound Tech, PRN",
+   "employer": "Atrium Health (Advocate Health)",
+   "facility": "Carolinas Medical Center",
+   "city": "Charlotte",
+   "state": "NC",
+   "lat": 35.2271,
+   "lng": -80.8431,
+   "region": "reloc",
+   "mods": [
+    "general"
+   ],
+   "type": "Per diem",
+   "shift": "Days, Monday to Saturday",
+   "pay": "$42.00 per hour",
+   "reg": "required",
+   "creds": [
+    "RDMS",
+    "RT(S)"
+   ],
+   "newgrad": false,
+   "url": "https://careers.advocatehealth.org/job/23902829/ultrasound-tech-prn-charlotte-nc/",
+   "employerUrl": "https://careers.advocatehealth.org/",
+   "notes": "ARDMS or ARRT sonography certification and BLS required.",
+   "source": "Employer careers site",
+   "added": "2026-10-01",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "North Bergen",
+   "creds": [],
+   "employer": "Hackensack Meridian Health",
+   "employerUrl": "https://jobs.hackensackmeridianhealth.org/",
+   "facility": "Palisades Medical Center",
+   "lat": 40.8043,
+   "lng": -74.0121,
+   "mods": [
+    "echo"
+   ],
+   "newgrad": false,
+   "notes": "Graduate of an approved cardiovascular program with BLS; a cardiac registry (posting says RCT) or eligibility is preferred, not required. One year of echo experience is asked for.",
+   "pay": "$43.82 per hour",
+   "reg": "eligible",
+   "region": "nj",
+   "shift": "Day shift",
+   "source": "Employer careers site",
+   "state": "NJ",
+   "title": "Cardiac Ultrasound Tech, Per Diem",
+   "type": "Per diem",
+   "url": "https://jobs.hackensackmeridianhealth.org/job/north-bergen/cardiac-ultrasound-tech-per-diem/19511/85746595728",
+   "id": "hmh-2025-169641",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "Manhasset",
+   "creds": [
+    "RVT",
+    "RVS"
+   ],
+   "employer": "Northwell Health",
+   "employerUrl": "https://jobs.northwell.edu/",
+   "facility": "North Shore University Hospital",
+   "lat": 40.7979,
+   "lng": -73.6996,
+   "mods": [
+    "vascular"
+   ],
+   "newgrad": false,
+   "notes": "Current RVT or RVS required, with one to three years of vascular experience and a technical school diploma.",
+   "pay": "$60.32 to $70.76 per hour",
+   "reg": "required",
+   "region": "li",
+   "shift": "2p to 12a",
+   "source": "Employer careers site",
+   "state": "NY",
+   "title": "Vascular Technologist, Part Time",
+   "type": "Part time",
+   "url": "https://jobs.northwell.edu/job-3/23365261/vascular-technologist-manhasset-ny/",
+   "id": "northwell-188230",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "New York",
+   "creds": [
+    "RDCS",
+    "RCS"
+   ],
+   "employer": "NewYork-Presbyterian",
+   "employerUrl": "https://careers.nyp.org/",
+   "facility": "Weill Cornell Medical Center",
+   "lat": 40.7644,
+   "lng": -73.9545,
+   "mods": [
+    "echo"
+   ],
+   "newgrad": false,
+   "notes": "Must be a cardiovascular ultrasound program graduate with BLS; RDCS or RCS can be earned within one year of hire. At least one year of experience is required.",
+   "pay": "$59.85 to $71.51 per hour",
+   "posted": "2026-06-17",
+   "reg": "eligible",
+   "region": "nyc",
+   "shift": "Wednesday to Saturday; 6a to 4p Wednesday to Friday, 6a to 3:30p Saturday",
+   "source": "Employer careers site",
+   "state": "NY",
+   "title": "Echo Tech, Sonographer, Full Time Mornings",
+   "town": "Manhattan, NY",
+   "type": "Full time",
+   "url": "https://careers.nyp.org/job/manhattan/echo-tech-sonographer-full-time-mornings/19715/96579545840",
+   "id": "nyp-00879031",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "Mineola",
+   "creds": [
+    "RDMS",
+    "RVT"
+   ],
+   "employer": "NYU Langone Health",
+   "employerUrl": "https://jobs.nyulangone.org/",
+   "facility": "NYU Langone Hospital Long Island",
+   "lat": 40.7409,
+   "lng": -73.6423,
+   "mods": [
+    "general"
+   ],
+   "newgrad": false,
+   "notes": "Requires graduation from an accredited two year ultrasound program and RDMS or RVT. Three years of experience preferred.",
+   "pay": "$60.00 per hour",
+   "reg": "required",
+   "region": "li",
+   "shift": "Variable day shifts including weekends and holidays",
+   "source": "Employer careers site",
+   "state": "NY",
+   "title": "Ultrasound Technologist, General, Per Diem",
+   "town": "Mineola / Garden City, NY",
+   "type": "Per diem",
+   "url": "https://jobs.nyulangone.org/job/23687961/ultrasound-technologist-general-per-diem-hospital-mineola-ny/",
+   "id": "nyu-RR00122871",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "Poughkeepsie",
+   "creds": [
+    "RDMS"
+   ],
+   "employer": "Optum NY",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "facility": "Optum, Poughkeepsie",
+   "lat": 41.7004,
+   "lng": -73.921,
+   "mods": [
+    "general"
+   ],
+   "newgrad": false,
+   "notes": "ARDMS certification and completion of an accredited ultrasound program are required. Five years of experience is preferred but not required.",
+   "pay": "$28.27 to $50.48 per hour (full time basis), $5,000 sign on bonus for external candidates",
+   "posted": "2026-03-17",
+   "reg": "required",
+   "region": "whv",
+   "shift": "Not posted",
+   "source": "Employer careers site",
+   "state": "NY",
+   "title": "Ultrasound Technologist, Per Diem",
+   "town": "Poughkeepsie, NY",
+   "type": "Per diem",
+   "url": "https://careers.unitedhealthgroup.com/job/poughkeepsie/ultrasound-technologist-per-diem/34088/92872070256",
+   "id": "optum-2286483",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  },
+  {
+   "city": "Howard Beach",
+   "creds": [
+    "RDMS"
+   ],
+   "employer": "Optum NY",
+   "employerUrl": "https://careers.unitedhealthgroup.com/",
+   "facility": "Optum outpatient imaging center, Howard Beach",
+   "lat": 40.6571,
+   "lng": -73.843,
+   "mods": [
+    "general",
+    "breast",
+    "vascular"
+   ],
+   "newgrad": false,
+   "notes": "ARDMS certification and an accredited ultrasound program are required, plus breast and general vascular ultrasound experience. Two or more years of experience preferred.",
+   "pay": "$28.94 to $51.63 per hour (full time basis), $10,000 sign on bonus for external candidates",
+   "posted": "2026-05-04",
+   "reg": "required",
+   "region": "nyc",
+   "shift": "Monday to Friday, 8a to 4:30p or 8:30a to 5p",
+   "source": "Employer careers site",
+   "state": "NY",
+   "title": "Ultrasound Technologist, All Inclusive, Full Time",
+   "town": "Queens, NY",
+   "type": "Full time",
+   "url": "https://careers.unitedhealthgroup.com/job/new-york/ultrasound-technologist-all-inclusive-full-time-howard-beach-ny/34088/94706793120",
+   "id": "optum-2360794",
+   "added": "2026-10-05",
+   "checked": "2026-10-05"
+  }
+ ]
+}
