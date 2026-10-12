@@ -39,6 +39,12 @@ var MODS = [["general","General"],["obgyn","OB/GYN"],["vascular","Vascular"],["e
 var MODLONG = {general:"General / abdominal",obgyn:"OB/GYN and MFM",vascular:"Vascular",echo:"Echocardiography",breast:"Breast",peds:"Pediatric",msk:"Musculoskeletal"};
 var TYPES = ["Full time","Part time","Per diem","Travel"];
 var CREDS = ["RDMS","RVT","RDCS","RCS","RVS","RT(S)","RT(VS)"];
+var STATUS = [["verified","Verified with employer"],["unverified","Third party listing"],["search","Saved search"]];
+var STATUSLONG = {verified:"Verified with employer",unverified:"Third party listing, not verified",search:"Saved search, opens live results"};
+var SETTINGS = [["hospital","Hospital or health system"],["outpatient","Outpatient clinic or imaging center"],["other","Other or varies"]];
+var QUICK = [["White Plains",0],["Danbury",13],["Poughkeepsie",23]];
+var SOCIAL = [["Instagram",["ultrasoundjobs","sonographerjobs","ultrasoundtech","vascularsonographer","echotech"],function(t){return "https://www.instagram.com/explore/tags/"+t+"/"}],
+  ["TikTok",["ultrasoundjobs","sonographerjobs","ultrasoundtech","vascularsonographer","sonographer"],function(t){return "https://www.tiktok.com/tag/"+t}]];
 var REG = {required:"Registration required",eligible:"Registry eligible accepted",unstated:"Credential not stated"};
 var BANDS = [[15,"Local","b1"],[30,"Short commute","b2"],[50,"Commutable","b3"],[75,"Extended commute","b4"],[1e9,"Relocation","b5"]];
 var regionName = {}; REGIONS.forEach(function(r){regionName[r[0]]=r[1]});
@@ -52,6 +58,8 @@ function fmtDate(s){if(!s)return "";var d=new Date(s+"T12:00:00");if(isNaN(d))re
 function daysSince(s){var d=new Date((s||"")+"T12:00:00");return isNaN(d)?0:Math.floor((TODAY-d)/864e5)}
 function isoToday(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function store(k,v){try{if(v===undefined){var r=localStorage.getItem("cure-jobs:"+k);return r?JSON.parse(r):null}localStorage.setItem("cure-jobs:"+k,JSON.stringify(v))}catch(e){return null}}
+function statusOf(j){var s=j.status;return (s==="unverified"||s==="search")?s:"verified"}
+function settingOf(j){var s=j.setting;return (s==="hospital"||s==="outpatient")?s:"other"}
 function stateKey(j){var s=String(j.state||"").toUpperCase();return (s==="NY"||s==="NJ"||s==="CT")?s:"OT"}
 var $ = function(id){return document.getElementById(id)};
 var qsa = function(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))};
@@ -62,7 +70,7 @@ app.innerHTML =
 '<header class="mast"><div class="wrap">'+
   '<div class="brand"><img class="mark" src="icons/icon-192.png" alt="" width="44" height="44"><span class="eyebrow">Center for Ultrasound Research &amp; Education · Career Services</span>'+
   '<h1>Sonography Jobs</h1>'+
-  '<p>Verified openings in general, vascular and cardiac sonography for CURE students and graduates, a resume builder made for sonographers, and the tools to search everywhere else.</p></div>'+
+  '<p>Sonography openings for CURE students and graduates, each labeled by how it was checked, plus a resume builder made for sonographers and the tools to search everywhere else.</p></div>'+
   '<nav class="tabs" role="tablist" aria-label="Sections">'+
     '<button class="tab" role="tab" id="t-jobs" data-view="jobs" aria-controls="v-jobs">Job openings</button>'+
     '<button class="tab" role="tab" id="t-resume" data-view="resume" aria-controls="v-resume">Resume builder</button>'+
@@ -78,7 +86,11 @@ app.innerHTML =
     '<div class="tiles big" id="tilesBig"></div>'+
     '<div class="lbl">By state</div><div class="tiles small" id="tilesState"></div>'+
     '<div class="lbl">By specialty</div><div class="tiles small" id="tilesMod"></div>'+
+    '<div class="lbl">By work setting</div><div class="tiles small" id="tilesSet"></div>'+
+    '<div class="lbl">By listing type</div><div class="tiles small" id="tilesStatus"></div>'+
+    '<p class="hint statkey"><b>Verified with employer:</b> CURE opened the posting on the employer\'s site and confirmed it open. <b>Third party listing:</b> found on a job board or aggregator and not yet confirmed by CURE. <b>Saved search:</b> opens live results for that area, specialty or employer.</p>'+
   '</section>'+
+  '<section class="hotwrap" id="hotjobs" hidden></section>'+
   '<section id="openings">'+
     '<div class="layout">'+
       '<aside class="rail" aria-label="Filters">'+
@@ -90,20 +102,23 @@ app.innerHTML =
           '<label><input type="radio" name="freg" value="notyet"> Not yet registered (registry eligible accepted)</label>'+
           '<label><input type="radio" name="freg" value="registered"> I am registered</label></div>'+
           '<label class="toggle"><input type="checkbox" id="fnewgrad"> New graduates welcome</label>'+
-          '<label class="toggle"><input type="checkbox" id="frecent"> Added in the last 7 days</label></div>'+
+          '<label class="toggle"><input type="checkbox" id="frecent"> Added in the last 7 days</label>'+
+          '<label class="toggle"><input type="checkbox" id="fhot"> Hot Jobs only</label></div>'+
+        '<div class="fgroup"><span class="gl">Listing type</span><div class="chips" id="cstatus"></div></div>'+
         '<div class="fgroup"><span class="gl">Specialty</span><div class="chips" id="cmods"></div></div>'+
+        '<div class="fgroup"><span class="gl">Work setting</span><div class="chips" id="csetting"></div></div>'+
         '<div class="fgroup"><span class="gl">State</span><div class="chips" id="cstates"></div></div>'+
         '<div class="fgroup"><span class="gl">Region</span><div class="chips" id="cregions"></div></div>'+
         '<div class="fgroup"><span class="gl">Job type</span><div class="chips" id="ctypes"></div></div>'+
         '<div class="fgroup"><label class="toggle"><input type="checkbox" id="fshort"> Show my saved jobs only</label><button class="linkbtn" id="fclear" type="button">Clear all filters</button></div>'+
       '</aside>'+
       '<div style="min-width:0">'+
-        '<div class="resbar"><div class="count" id="count" aria-live="polite"></div><div class="ctl"><label for="fsort" class="status">Sort</label><select id="fsort"><option value="near">Nearest first</option><option value="new">Newest first</option></select></div></div>'+
+        '<div class="resbar"><div class="count" id="count" aria-live="polite"></div><div class="ctl"><span class="status">Nearest to</span><span class="quick" id="quick"></span><label for="fsort" class="status">Sort</label><select id="fsort"><option value="near">Nearest first (verified first within each distance band)</option><option value="new">Newest first</option></select></div></div>'+
         '<div id="results"></div>'+
       '</div>'+
     '</div>'+
   '</section>'+
-  '<p class="disclaim">Listings link to the employer or job board, where you apply. Each listing was open when CURE checked it; postings can close without notice, so confirm requirements, pay and status on the original posting. Distances are approximate straight line miles, not driving distance. CURE does not guarantee employment.</p>'+
+  '<p class="disclaim">Listings link to the employer or job board, where you apply. Only listings marked Verified with employer were confirmed open by CURE, and even those can close without notice. Third party listings and saved searches have not been checked by CURE. Confirm requirements, pay and status on the original posting before you apply. Distances are approximate straight line miles, not driving distance. CURE does not guarantee employment.</p>'+
 '</div>'+
 /* ---------- resume view ---------- */
 '<div class="view" id="v-resume" role="tabpanel" aria-labelledby="t-resume" hidden>'+
@@ -141,7 +156,7 @@ window.addEventListener("hashchange",function(){var h=(location.hash||"").replac
 /* ================= openings ================= */
 var saved = store("filters") || {};
 var F = {q:saved.q||"",regions:saved.regions||[],states:saved.states||[],mods:saved.mods||[],types:saved.types||[],reg:saved.reg||"any",
-  newgrad:!!saved.newgrad,recent:!!saved.recent,maxd:saved.maxd||"any",anchor:saved.anchor||0,sort:saved.sort||"near",shortlist:!!saved.shortlist};
+  newgrad:!!saved.newgrad,recent:!!saved.recent,statuses:saved.statuses||[],settings:saved.settings||[],hot:!!saved.hot,maxd:saved.maxd||"any",anchor:saved.anchor||0,sort:saved.sort||"near",shortlist:!!saved.shortlist};
 var stars = store("stars") || [];
 var PAGE = 36, shown = PAGE;
 var hidden = {};
@@ -150,13 +165,16 @@ function persist(){store("filters",F);store("stars",stars)}
 $("fanchor").innerHTML = ANCHORS.map(function(a,i){return '<option value="'+i+'">'+esc(a[0])+'</option>'}).join("");
 function syncInputs(){
   $("fanchor").value=String(F.anchor);$("fmaxd").value=F.maxd;$("fsort").value=F.sort;$("fq").value=F.q;
-  $("fnewgrad").checked=F.newgrad;$("frecent").checked=F.recent;$("fshort").checked=F.shortlist;
+  $("fnewgrad").checked=F.newgrad;$("frecent").checked=F.recent;$("fhot").checked=F.hot;$("fshort").checked=F.shortlist;
   qsa('input[name=freg]').forEach(function(r){r.checked=r.value===F.reg});
   qsa(".rail .chip").forEach(function(c){c.setAttribute("aria-pressed",String(F[c.dataset.k].indexOf(c.dataset.v)>-1))});
+  qsa("#quick .chip").forEach(function(c){c.setAttribute("aria-pressed",String(+c.dataset.anchor===+F.anchor))});
 }
 function chipGroup(el,items,key){el.innerHTML=items.map(function(it){return '<button type="button" class="chip" data-k="'+key+'" data-v="'+esc(it[0])+'" aria-pressed="false">'+esc(it[1])+' <span class="n"></span></button>'}).join("")}
 chipGroup($("cmods"),MODS,"mods");chipGroup($("cstates"),STATES,"states");chipGroup($("cregions"),REGIONS,"regions");
-chipGroup($("ctypes"),TYPES.map(function(t){return [t,t]}),"types");
+chipGroup($("ctypes"),TYPES.map(function(t){return [t,t]}),"types");chipGroup($("cstatus"),STATUS,"statuses");chipGroup($("csetting"),SETTINGS,"settings");
+$("quick").innerHTML=QUICK.map(function(q){return '<button type="button" class="chip" data-anchor="'+q[1]+'" aria-pressed="false">'+esc(q[0])+'</button>'}).join("");
+$("quick").addEventListener("click",function(e){var b=e.target.closest("[data-anchor]");if(!b)return;F.anchor=+b.dataset.anchor;F.sort="near";syncInputs();render()});
 syncInputs();
 document.querySelector(".rail").addEventListener("click",function(e){
   var b=e.target.closest(".chip");if(!b)return;
@@ -169,9 +187,11 @@ $("fmaxd").addEventListener("change",function(){F.maxd=this.value;shown=PAGE;ren
 $("fsort").addEventListener("change",function(){F.sort=this.value;render()});
 $("fnewgrad").addEventListener("change",function(){F.newgrad=this.checked;shown=PAGE;render()});
 $("frecent").addEventListener("change",function(){F.recent=this.checked;shown=PAGE;render()});
+$("fhot").addEventListener("change",function(){F.hot=this.checked;shown=PAGE;render()});
 $("fshort").addEventListener("change",function(){F.shortlist=this.checked;shown=PAGE;render()});
 qsa('input[name=freg]').forEach(function(r){r.addEventListener("change",function(){F.reg=this.value;shown=PAGE;render()})});
-function clearFilters(){F.q="";F.regions=[];F.states=[];F.mods=[];F.types=[];F.reg="any";F.newgrad=false;F.recent=false;F.maxd="any";F.shortlist=false;shown=PAGE;syncInputs();render()}
+function resetF(){F.q="";F.regions=[];F.states=[];F.mods=[];F.types=[];F.reg="any";F.newgrad=false;F.recent=false;F.maxd="any";F.shortlist=false;F.statuses=[];F.settings=[];F.hot=false}
+function clearFilters(){resetF();shown=PAGE;syncInputs();render()}
 $("fclear").addEventListener("click",clearFilters);
 
 function distOf(j){var a=ANCHORS[F.anchor]||ANCHORS[0];return (typeof j.lat==="number"&&typeof j.lng==="number")?miles(a[1],a[2],j.lat,j.lng):null}
@@ -185,7 +205,10 @@ function matches(j,skip){
   if(skip!=="regions"&&F.regions.length&&F.regions.indexOf(j.region)<0)return false;
   if(skip!=="states"&&F.states.length&&F.states.indexOf(stateKey(j))<0)return false;
   if(skip!=="types"&&F.types.length&&F.types.indexOf(j.type)<0)return false;
-  if(F.reg==="notyet"&&j.reg==="required")return false;
+  if(skip!=="statuses"&&F.statuses.length&&F.statuses.indexOf(statusOf(j))<0)return false;
+  if(skip!=="settings"&&F.settings.length&&F.settings.indexOf(settingOf(j))<0)return false;
+  if(F.hot&&!j.hot)return false;
+  if(F.reg==="notyet"&&(j.reg==="required"||statusOf(j)==="search"))return false;
   if(F.reg==="registered"&&j.reg==="eligible"&&!(j.creds&&j.creds.length))return false;
   if(F.newgrad&&!j.newgrad)return false;
   if(F.recent&&!isNew(j))return false;
@@ -194,7 +217,8 @@ function matches(j,skip){
 }
 function chipCounts(){
   [["cmods","mods",function(j,v){return (j.mods||[]).indexOf(v)>-1}],["cregions","regions",function(j,v){return j.region===v}],
-   ["cstates","states",function(j,v){return stateKey(j)===v}],["ctypes","types",function(j,v){return j.type===v}]].forEach(function(g){
+   ["cstates","states",function(j,v){return stateKey(j)===v}],["ctypes","types",function(j,v){return j.type===v}],
+   ["cstatus","statuses",function(j,v){return statusOf(j)===v}],["csetting","settings",function(j,v){return settingOf(j)===v}]].forEach(function(g){
     var pool=DATA.jobs.filter(function(j){return matches(j,g[1])});
     qsa(".chip",$(g[0])).forEach(function(c){c.querySelector(".n").textContent=pool.filter(function(j){return g[2](j,c.dataset.v)}).length});
   });
@@ -205,62 +229,96 @@ function tiles(){
   var all=DATA.jobs.filter(function(j){return !hidden[j.id]});
   var a=ANCHORS[F.anchor]||ANCHORS[0];
   var near=all.filter(function(j){var d=distOf(j);return d!=null&&d<=30}).length;
-  var only=function(o){return JSON.stringify({regions:F.regions,states:F.states,mods:F.mods,types:F.types,reg:F.reg,newgrad:F.newgrad,recent:F.recent,maxd:F.maxd,q:F.q,shortlist:F.shortlist})===JSON.stringify(Object.assign({regions:[],states:[],mods:[],types:[],reg:"any",newgrad:false,recent:false,maxd:"any",q:"",shortlist:false},o))};
+  var only=function(o){return JSON.stringify({regions:F.regions,states:F.states,mods:F.mods,types:F.types,reg:F.reg,newgrad:F.newgrad,recent:F.recent,maxd:F.maxd,q:F.q,shortlist:F.shortlist,statuses:F.statuses,settings:F.settings,hot:F.hot})===JSON.stringify(Object.assign({regions:[],states:[],mods:[],types:[],reg:"any",newgrad:false,recent:false,maxd:"any",q:"",shortlist:false,statuses:[],settings:[],hot:false},o))};
   var big=[
-    ["all","lead",all.length,"Openings listed",only({})],
+    ["all","lead",all.length,"Listings",only({})],
     ["near","",near,"Within 30 miles of "+a[0].replace(", White Plains",""),only({maxd:"30"})],
-    ["ng","ng",all.filter(function(j){return j.newgrad}).length,"New graduates welcome",only({newgrad:true})],
-    ["re","re",all.filter(function(j){return j.reg!=="required"}).length,"Open to candidates not yet registered",only({reg:"notyet"})],
+    ["ng","ng",all.filter(function(j){return j.newgrad}).length,"New grad friendly",only({newgrad:true})],
+    ["re","re",all.filter(function(j){return j.reg!=="required"&&statusOf(j)!=="search"}).length,"Open to candidates not yet registered",only({reg:"notyet"})],
+    ["hot","hot",all.filter(function(j){return j.hot}).length,"Hot Jobs",only({hot:true})],
     ["new","",all.filter(isNew).length,"Added in the last 7 days",only({recent:true})]
   ];
   $("tilesBig").innerHTML=big.map(function(t){return '<button type="button" class="tile '+t[1]+'" data-tile="'+t[0]+'" aria-pressed="'+t[4]+'"><span class="num">'+t[2]+'</span><span class="cap">'+esc(t[3])+'</span></button>'}).join("");
   $("tilesState").innerHTML=STATES.map(function(s){var n=all.filter(function(j){return stateKey(j)===s[0]}).length;return '<button type="button" class="tile" data-tile="st:'+s[0]+'" aria-pressed="'+only({states:[s[0]]})+'"><span class="num">'+n+'</span><span class="cap">'+esc(s[1])+'</span></button>'}).join("");
+  $("tilesSet").innerHTML=SETTINGS.map(function(s){var n=all.filter(function(j){return settingOf(j)===s[0]}).length;return '<button type="button" class="tile" data-tile="se:'+s[0]+'" aria-pressed="'+only({settings:[s[0]]})+'"><span class="num">'+n+'</span><span class="cap">'+esc(s[1])+'</span></button>'}).join("");
+  $("tilesStatus").innerHTML=STATUS.map(function(s){var n=all.filter(function(j){return statusOf(j)===s[0]}).length;return '<button type="button" class="tile st-'+s[0]+'" data-tile="ss:'+s[0]+'" aria-pressed="'+only({statuses:[s[0]]})+'"><span class="num">'+n+'</span><span class="cap">'+esc(s[1])+'</span></button>'}).join("");
   $("tilesMod").innerHTML=MODS.map(function(m){var n=all.filter(function(j){return (j.mods||[]).indexOf(m[0])>-1}).length;return '<button type="button" class="tile" data-tile="md:'+m[0]+'" aria-pressed="'+only({mods:[m[0]]})+'"><span class="num">'+n+'</span><span class="cap">'+esc(MODLONG[m[0]])+'</span></button>'}).join("");
 }
 document.querySelector(".dash").addEventListener("click",function(e){
   var t=e.target.closest("[data-tile]");if(!t)return;
   var k=t.dataset.tile,was=t.getAttribute("aria-pressed")==="true";
-  F.q="";F.regions=[];F.states=[];F.mods=[];F.types=[];F.reg="any";F.newgrad=false;F.recent=false;F.maxd="any";F.shortlist=false;
+  resetF();
   if(!was){
-    if(k==="near")F.maxd="30";else if(k==="ng")F.newgrad=true;else if(k==="re")F.reg="notyet";else if(k==="new"){F.recent=true;F.sort="new"}
+    if(k==="near")F.maxd="30";else if(k==="ng")F.newgrad=true;else if(k==="re")F.reg="notyet";else if(k==="hot")F.hot=true;else if(k==="new"){F.recent=true;F.sort="new"}
     else if(k.indexOf("st:")===0)F.states=[k.slice(3)];else if(k.indexOf("md:")===0)F.mods=[k.slice(3)];
+    else if(k.indexOf("se:")===0)F.settings=[k.slice(3)];else if(k.indexOf("ss:")===0)F.statuses=[k.slice(3)];
   }
   shown=PAGE;syncInputs();render();
   var o=$("openings");if(o&&o.scrollIntoView)o.scrollIntoView({behavior:"smooth",block:"start"});
 });
 
 /* ---------- job card ---------- */
+var STBADGE={verified:'<span class="sbadge s-verified">✓ Verified with employer</span>',unverified:'<span class="sbadge s-unverified">Third party · not verified</span>',search:'<span class="sbadge s-search">Saved search</span>'};
 function card(j){
-  var d=distOf(j),b=d==null?null:band(d);
-  var tags='<span class="tag reg-'+esc(j.reg)+'">'+esc(REG[j.reg]||j.reg)+'</span>'+(j.newgrad?'<span class="tag newgrad">New grads welcome</span>':'')+
+  var d=distOf(j),b=d==null?null:band(d),st=statusOf(j);
+  var tags=(st==="search"?'':'<span class="tag reg-'+esc(j.reg||"unstated")+'">'+esc(REG[j.reg]||REG.unstated)+'</span>')+(j.newgrad?'<span class="tag newgrad">New grad friendly</span>':'')+
     (j.mods||[]).map(function(m){return '<span class="tag">'+esc(MODLONG[m]||m)+'</span>'}).join("")+
     (j.creds||[]).map(function(c){return '<span class="tag cred">'+esc(c)+'</span>'}).join("");
   var facts='';
   if(j.type)facts+='<dt>Type</dt><dd>'+esc(j.type)+'</dd>';
   if(j.shift)facts+='<dt>Schedule</dt><dd>'+esc(j.shift)+'</dd>';
   if(j.pay)facts+='<dt>Pay</dt><dd>'+esc(j.pay)+'</dd>';
+  facts+='<dt>Setting</dt><dd>'+esc((SETTINGS.filter(function(s){return s[0]===settingOf(j)})[0]||["",""])[1])+'</dd>';
   var url=safeUrl(j.url),eurl=safeUrl(j.employerUrl),on=stars.indexOf(j.id)>-1,age=daysSince(j.checked||j.added);
-  return '<article class="job">'+
-    '<div class="top"><div style="min-width:0"><span class="band '+(b?b[2]:"b5")+'"><i></i>'+(b?b[1]:"Location varies")+'</span>'+(isNew(j)?'<span class="new">NEW</span>':'')+
+  var foot=st==="verified"?'Added '+esc(fmtDate(j.added))+(j.checked&&j.checked!==j.added?' · confirmed open '+esc(fmtDate(j.checked)):'')+(j.source?' · '+esc(j.source):'')
+    :st==="unverified"?'Found '+esc(fmtDate(j.added))+(j.source?' on '+esc(j.source):'')+' · not yet checked by CURE'
+    :'Saved search'+(j.source?' on '+esc(j.source):'')+' · results change daily';
+  var btn=st==="search"?'Open search results ↗':'View job and apply ↗';
+  return '<article class="job st-'+st+(j.hot?' hotcard':'')+'">'+
+    '<div class="badges">'+STBADGE[st]+(j.hot?'<span class="sbadge s-hot">🔥 Hot Job</span>':'')+(isNew(j)?'<span class="new">NEW</span>':'')+'</div>'+
+    '<div class="top"><div style="min-width:0"><span class="band '+(b?b[2]:"b5")+'"><i></i>'+(b?b[1]:"Location varies")+'</span>'+
     '<h3>'+esc(j.title)+'</h3><div class="emp">'+esc(j.employer)+(j.facility&&j.facility!==j.employer?' · '+esc(j.facility):'')+'</div>'+
     '<div class="loc">'+esc(j.city)+(j.state?', '+esc(j.state):'')+'</div></div>'+
-    (d!=null?'<span class="dist" title="Approximate straight line distance">≈ '+Math.round(d)+' mi</span>':'')+'</div>'+
+    (d!=null?'<span class="dist" title="Approximate straight line distance from '+esc((ANCHORS[F.anchor]||ANCHORS[0])[0])+'">≈ '+Math.round(d)+' mi</span>':'')+'</div>'+
     '<div class="tags">'+tags+'</div>'+(facts?'<dl class="facts">'+facts+'</dl>':'')+
     (j.notes?'<p class="note">'+esc(j.notes)+'</p>':'')+
-    (age>45?'<p class="old">Last confirmed open more than 45 days ago. Check the posting before you apply.</p>':'')+
-    '<div class="actions">'+(url?'<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener">View job and apply ↗</a>':'')+
+    (st==="unverified"?'<p class="old">Not confirmed by CURE. Open the posting and confirm it is still accepting applications.</p>':'')+
+    (st==="verified"&&age>45?'<p class="old">Last confirmed open more than 45 days ago. Check the posting before you apply.</p>':'')+
+    '<div class="actions">'+(url?'<a class="btn'+(st==="search"?' ghost':'')+'" href="'+esc(url)+'" target="_blank" rel="noopener">'+btn+'</a>':'')+
     '<button type="button" class="star" data-star="'+esc(j.id)+'" aria-pressed="'+on+'">'+(on?'★ Saved':'☆ Save')+'</button>'+
-    (eurl?'<a class="linkbtn" href="'+esc(eurl)+'" target="_blank" rel="noopener">All openings at this employer</a>':'')+'</div>'+
-    '<div class="added">Added '+esc(fmtDate(j.added))+(j.checked&&j.checked!==j.added?' · confirmed open '+esc(fmtDate(j.checked)):'')+(j.source?' · '+esc(j.source):'')+'</div></article>';
+    (eurl&&eurl!==url?'<a class="linkbtn" href="'+esc(eurl)+'" target="_blank" rel="noopener">All openings at this employer</a>':'')+'</div>'+
+    '<div class="added">'+foot+'</div></article>';
 }
+/* ---------- hot jobs ---------- */
+function renderHot(){
+  var hot=DATA.jobs.filter(function(j){return j.hot&&!hidden[j.id]});
+  var el=$("hotjobs");if(!hot.length){el.hidden=true;return}
+  var g={};hot.forEach(function(j){var k=j.hotGroup||j.employer;(g[k]=g[k]||[]).push(j)});
+  var keys=Object.keys(g).sort();
+  el.hidden=false;
+  el.innerHTML='<div class="hothead"><span class="eyebrow">Featured employers</span><h2>🔥 Hot Jobs</h2><p>Openings at major health systems, grouped by employer. Hot means featured, not a guarantee the posting is open; each card shows how CURE checked it.</p></div>'+
+    '<div class="hotgroups">'+keys.map(function(k){var items=g[k];items.forEach(function(j){j._d=distOf(j)});items.sort(function(a,b){return (a._d==null?1e9:a._d)-(b._d==null?1e9:b._d)});
+      return '<details class="hotgrp"><summary><b>'+esc(k)+'</b><span class="hcount">'+items.length+(items.length===1?' job':' jobs')+'</span></summary><div class="grid">'+items.map(card).join("")+'</div></details>'}).join("")+'</div>'+
+    '<div class="more"><button class="btn gold" type="button" data-hotall="1">Show all Hot Jobs in the list below</button></div>';
+}
+$("hotjobs").addEventListener("click",function(e){
+  if(e.target.closest("[data-hotall]")){resetF();F.hot=true;shown=PAGE;syncInputs();render();var o=$("openings");if(o&&o.scrollIntoView)o.scrollIntoView({behavior:"smooth",block:"start"});return}
+  var s=e.target.closest("[data-star]");if(!s)return;
+  var id=s.dataset.star,i=stars.indexOf(id);if(i>-1)stars.splice(i,1);else stars.push(id);
+  qsa('[data-star="'+id.replace(/"/g,'')+'"]').forEach(function(x){x.setAttribute("aria-pressed",String(i<0));x.textContent=i<0?"★ Saved":"☆ Save"});persist();
+});
 function render(){
-  persist();tiles();chipCounts();
+  persist();tiles();chipCounts();renderHot();
   var list=DATA.jobs.filter(function(j){return matches(j)});
   list.forEach(function(j){j._d=distOf(j)});
-  list.sort(F.sort==="new"?function(a,b){return String(b.added||"").localeCompare(String(a.added||""))||((a._d==null?1e9:a._d)-(b._d==null?1e9:b._d))}:function(a,b){return (a._d==null?1e9:a._d)-(b._d==null?1e9:b._d)});
+  var RANK={verified:0,unverified:1,search:2};
+  function bi(j){if(j._d==null)return 99;for(var i=0;i<BANDS.length;i++){if(j._d<=BANDS[i][0])return i}return 99}
+  list.sort(F.sort==="new"?function(a,b){return String(b.added||"").localeCompare(String(a.added||""))||RANK[statusOf(a)]-RANK[statusOf(b)]||((a._d==null?1e9:a._d)-(b._d==null?1e9:b._d))}
+    :function(a,b){return bi(a)-bi(b)||RANK[statusOf(a)]-RANK[statusOf(b)]||((a._d==null?1e9:a._d)-(b._d==null?1e9:b._d))});
   var total=DATA.jobs.filter(function(j){return !hidden[j.id]}).length;
-  $("count").innerHTML=list.length+(list.length===1?' opening':' openings')+'<small>of '+total+' listed</small>';
-  $("updatedLine").textContent="Checked by CURE Career Services. Updated "+fmtDate(DATA.updated)+".";
+  var nv=list.filter(function(j){return statusOf(j)==="verified"}).length;
+  $("count").innerHTML=list.length+(list.length===1?' listing':' listings')+'<small>of '+total+' · '+nv+' verified with employer</small>';
+  $("updatedLine").textContent="Updated "+fmtDate(DATA.updated)+" by CURE Career Services. Every listing is labeled by how it was checked.";
   if(!total){
     $("results").innerHTML='<div class="empty"><h3>Openings are on their way</h3><p>CURE checks every posting before it appears here. While this list fills, the live job search in the Career toolkit covers every major board.</p><button class="btn ghost" type="button" data-goto="toolkit">Open the Career toolkit</button></div>';
   } else if(!list.length){
@@ -276,7 +334,7 @@ $("results").addEventListener("click",function(e){
   var g=e.target.closest("[data-goto]");if(g){showView(g.dataset.goto);return}
   var s=e.target.closest("[data-star]");if(!s)return;
   var id=s.dataset.star,i=stars.indexOf(id);if(i>-1)stars.splice(i,1);else stars.push(id);
-  s.setAttribute("aria-pressed",String(i<0));s.textContent=i<0?"★ Saved":"☆ Save";persist();
+  qsa('[data-star="'+id.replace(/"/g,'')+'"]').forEach(function(x){x.setAttribute("aria-pressed",String(i<0));x.textContent=i<0?"★ Saved":"☆ Save"});persist();
   if(F.shortlist)render();
 });
 
@@ -341,6 +399,9 @@ $("kit").innerHTML=
     '<div class="fgroup"><label for="lrad">Radius (Indeed)</label><select id="lrad"><option value="15">15 miles</option><option value="25">25 miles</option><option value="50" selected>50 miles</option><option value="100">100 miles</option></select></div></div>'+
     '<div class="launch-x"><label class="toggle"><input type="checkbox" id="lnew"> Add "new grad"</label><label class="toggle"><input type="checkbox" id="lelig"> Add "registry eligible"</label></div>'+
     '<div class="boards" id="boardlinks"></div><p class="qtext" id="qtext"></p>')+
+  kitSec("social","Social media job offers","Hiring posts on Instagram and TikTok",
+    '<p>Recruiters and imaging practices often post openings on social media before job boards. Tap a hashtag to browse recent posts. Results include content other than job offers, and nothing there is checked by CURE.</p>'+
+    '<div class="social">'+SOCIAL.map(function(s){return '<div><h3>'+esc(s[0])+'</h3><div class="terms">'+s[1].map(function(t){return '<a class="htag" target="_blank" rel="noopener" href="'+esc(s[2](t))+'">#'+esc(t)+'</a>'}).join("")+'</div></div>'}).join("")+'</div>')+
   kitSec("emp","Employer career sites","Hospital systems and imaging companies, by region",'<div class="emps" id="emplist"></div>')+
   kitSec("dist","Distance guide","How the colored distance bands are set",
     '<p>Each opening shows its approximate straight line distance from the place you choose under "Measure distance from." Driving time varies with route and traffic.</p>'+
