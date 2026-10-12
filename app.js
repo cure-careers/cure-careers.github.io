@@ -136,6 +136,7 @@ function showView(v){
 }
 qsa(".tab").forEach(function(t){t.addEventListener("click",function(){showView(t.dataset.view);try{history.replaceState(null,"","#"+t.dataset.view)}catch(e){}})});
 showView((location.hash||"").replace("#","")||store("view")||"jobs");
+window.addEventListener("hashchange",function(){var h=(location.hash||"").replace("#","");if(h)showView(h)});
 
 /* ================= openings ================= */
 var saved = store("filters") || {};
