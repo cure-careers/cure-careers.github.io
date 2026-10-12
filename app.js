@@ -98,7 +98,7 @@ app.innerHTML =
       '<aside class="rail" aria-label="Filters">'+
         '<div class="fgroup"><label for="fq">Search</label><input id="fq" type="search" placeholder="Title, employer, town"></div>'+
         '<div class="fgroup"><label for="fanchor">Measure distance from</label><select id="fanchor"></select><p class="hint">Pick the area closest to where you live.</p></div>'+
-        '<div class="fgroup"><label for="fmaxd">Maximum distance</label><select id="fmaxd"><option value="any">Any distance</option><option value="15">Within 15 miles</option><option value="30">Within 30 miles</option><option value="50">Within 50 miles</option><option value="75">Within 75 miles</option><option value="120">Within 120 miles</option></select></div>'+
+        '<div class="fgroup"><label for="fmaxd">Maximum distance</label><select id="fmaxd"><option value="any">Any distance</option><option value="15">Within 15 miles</option><option value="30">Within 30 miles</option><option value="50">Within 50 miles</option><option value="60">Within 60 miles</option><option value="75">Within 75 miles</option><option value="120">Within 120 miles</option></select></div>'+
         '<div class="fgroup"><span class="gl" id="lreg">My registry status</span><div class="seg" role="radiogroup" aria-labelledby="lreg">'+
           '<label><input type="radio" name="freg" value="any"> Show all openings</label>'+
           '<label><input type="radio" name="freg" value="notyet"> Not yet registered (registry eligible accepted)</label>'+
@@ -234,11 +234,11 @@ function chipCounts(){
 function tiles(){
   var all=DATA.jobs.filter(function(j){return !hidden[j.id]});
   var a=ANCHORS[F.anchor]||ANCHORS[0];
-  var near=all.filter(function(j){var d=distOf(j);return d!=null&&d<=30}).length;
+  var near=all.filter(function(j){var d=distOf(j);return d!=null&&d<=60}).length;
   var only=function(o){return JSON.stringify({regions:F.regions,states:F.states,mods:F.mods,types:F.types,reg:F.reg,newgrad:F.newgrad,recent:F.recent,maxd:F.maxd,q:F.q,shortlist:F.shortlist,statuses:F.statuses,settings:F.settings,hot:F.hot,st:F.st})===JSON.stringify(Object.assign({regions:[],states:[],mods:[],types:[],reg:"any",newgrad:false,recent:false,maxd:"any",q:"",shortlist:false,statuses:[],settings:[],hot:false,st:""},o))};
   var big=[
     ["all","lead",all.length,"Listings",only({})],
-    ["near","",near,"Within 30 miles of "+a[0].replace(", White Plains",""),only({maxd:"30"})],
+    ["near","",near,"Within 60 miles of "+a[0].replace(", White Plains",""),only({maxd:"60"})],
     ["ng","ng",all.filter(function(j){return j.newgrad}).length,"New grad friendly",only({newgrad:true})],
     ["re","re",all.filter(function(j){return j.reg!=="required"&&statusOf(j)!=="search"}).length,"Open to candidates not yet registered",only({reg:"notyet"})],
     ["hot","hot",all.filter(function(j){return j.hot}).length,"Hot Jobs",only({hot:true})],
@@ -255,7 +255,7 @@ document.querySelector(".dash").addEventListener("click",function(e){
   var k=t.dataset.tile,was=t.getAttribute("aria-pressed")==="true";
   resetF();
   if(!was){
-    if(k==="near")F.maxd="30";else if(k==="ng")F.newgrad=true;else if(k==="re")F.reg="notyet";else if(k==="hot")F.hot=true;else if(k==="new"){F.recent=true;F.sort="new"}
+    if(k==="near")F.maxd="60";else if(k==="ng")F.newgrad=true;else if(k==="re")F.reg="notyet";else if(k==="hot")F.hot=true;else if(k==="new"){F.recent=true;F.sort="new"}
     else if(k.indexOf("st:")===0)F.states=[k.slice(3)];else if(k.indexOf("md:")===0)F.mods=[k.slice(3)];
     else if(k.indexOf("se:")===0)F.settings=[k.slice(3)];else if(k.indexOf("ss:")===0)F.statuses=[k.slice(3)];
   }
