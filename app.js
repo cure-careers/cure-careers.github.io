@@ -14,7 +14,8 @@ var ANCHORS = [
   ["Stamford, CT",41.0534,-73.5387],["Norwalk, CT",41.1177,-73.4082],["Bridgeport, CT",41.1865,-73.1952],["Danbury, CT",41.3948,-73.4540],["New Haven, CT",41.3083,-72.9279],
   ["Hackensack, NJ",40.8859,-74.0435],["Paterson, NJ",40.9168,-74.1718],["Newark, NJ",40.7357,-74.1724],["Jersey City, NJ",40.7178,-74.0431],
   ["Peekskill",41.2901,-73.9204],["Mount Kisco",41.2043,-73.7271],["New City (Rockland)",41.1476,-73.9896],["Carmel (Putnam)",41.4301,-73.6801],
-  ["Poughkeepsie",41.7004,-73.9210],["Newburgh",41.5034,-74.0104],["Middletown, NY",41.4459,-74.4229],["Kingston, NY",41.9270,-73.9974]
+  ["Poughkeepsie",41.7004,-73.9210],["Newburgh",41.5034,-74.0104],["Middletown, NY",41.4459,-74.4229],["Kingston, NY",41.9270,-73.9974],
+  ["Charlotte, NC",35.2271,-80.8431],["Raleigh, NC",35.7796,-78.6382],["Charleston, SC",32.7765,-79.9311],["Atlanta, GA",33.7490,-84.3880],["Jacksonville, FL",30.3322,-81.6557],["Orlando, FL",28.5383,-81.3792],["Tampa, FL",27.9506,-82.4572],["Miami, FL",25.7617,-80.1918],["Honolulu, HI",21.3069,-157.8583]
 ];
 var TOWNS = [
   ["White Plains, NY",41.0340,-73.7629,"whv"],["Yonkers, NY",40.9312,-73.8988,"whv"],["New Rochelle, NY",40.9115,-73.7824,"whv"],
@@ -33,8 +34,9 @@ var TOWNS = [
   ["Hackensack, NJ",40.8859,-74.0435,"nj"],["Paterson, NJ",40.9168,-74.1718,"nj"],["Newark, NJ",40.7357,-74.1724,"nj"],["Jersey City / Hoboken, NJ",40.7178,-74.0431,"nj"],
   ["Morristown, NJ",40.7968,-74.4815,"nj"],["Edison / Iselin, NJ",40.5390,-74.3685,"nj"],["New Brunswick, NJ",40.4862,-74.4518,"nj"],["Asbury Park / Neptune, NJ",40.2204,-74.0121,"nj"]
 ];
-var REGIONS = [["whv","Westchester & Hudson Valley"],["nyc","New York City"],["li","Long Island"],["nj","New Jersey"],["ct","Connecticut"],["reloc","Elsewhere / relocation"]];
-var STATES = [["NY","New York"],["NJ","New Jersey"],["CT","Connecticut"],["OT","Other states"]];
+var REGIONS = [["whv","Westchester & Hudson Valley"],["nyc","New York City"],["li","Long Island"],["nj","New Jersey"],["ct","Connecticut"],["south","Carolinas, Georgia & Florida"],["hi","Hawaii"],["reloc","Other states"]];
+var STATES = [["NY","New York"],["NJ","New Jersey"],["CT","Connecticut"],["NC","North Carolina"],["SC","South Carolina"],["GA","Georgia"],["FL","Florida"],["HI","Hawaii"],["OT","All other states"]];
+var STATENAMES={AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",DC:"District of Columbia",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming"};
 var MODS = [["general","General"],["obgyn","OB/GYN"],["vascular","Vascular"],["echo","Echo"],["breast","Breast"],["peds","Pediatric"],["msk","MSK"]];
 var MODLONG = {general:"General / abdominal",obgyn:"OB/GYN and MFM",vascular:"Vascular",echo:"Echocardiography",breast:"Breast",peds:"Pediatric",msk:"Musculoskeletal"};
 var TYPES = ["Full time","Part time","Per diem","Travel"];
@@ -60,7 +62,7 @@ function isoToday(){var d=new Date();return d.getFullYear()+"-"+String(d.getMont
 function store(k,v){try{if(v===undefined){var r=localStorage.getItem("cure-jobs:"+k);return r?JSON.parse(r):null}localStorage.setItem("cure-jobs:"+k,JSON.stringify(v))}catch(e){return null}}
 function statusOf(j){var s=j.status;return (s==="unverified"||s==="search")?s:"verified"}
 function settingOf(j){var s=j.setting;return (s==="hospital"||s==="outpatient")?s:"other"}
-function stateKey(j){var s=String(j.state||"").toUpperCase();return (s==="NY"||s==="NJ"||s==="CT")?s:"OT"}
+function stateKey(j){var s=String(j.state||"").toUpperCase();return ["NY","NJ","CT","NC","SC","GA","FL","HI"].indexOf(s)>-1?s:"OT"}
 var $ = function(id){return document.getElementById(id)};
 var qsa = function(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))};
 
@@ -107,7 +109,7 @@ app.innerHTML =
         '<div class="fgroup"><span class="gl">Listing type</span><div class="chips" id="cstatus"></div></div>'+
         '<div class="fgroup"><span class="gl">Specialty</span><div class="chips" id="cmods"></div></div>'+
         '<div class="fgroup"><span class="gl">Work setting</span><div class="chips" id="csetting"></div></div>'+
-        '<div class="fgroup"><span class="gl">State</span><div class="chips" id="cstates"></div></div>'+
+        '<div class="fgroup"><span class="gl">State</span><div class="chips" id="cstates"></div><label for="fst" class="hint" style="margin:4px 0 0">Or choose any state</label><select id="fst"></select></div>'+
         '<div class="fgroup"><span class="gl">Region</span><div class="chips" id="cregions"></div></div>'+
         '<div class="fgroup"><span class="gl">Job type</span><div class="chips" id="ctypes"></div></div>'+
         '<div class="fgroup"><label class="toggle"><input type="checkbox" id="fshort"> Show my saved jobs only</label><button class="linkbtn" id="fclear" type="button">Clear all filters</button></div>'+
@@ -156,7 +158,7 @@ window.addEventListener("hashchange",function(){var h=(location.hash||"").replac
 /* ================= openings ================= */
 var saved = store("filters") || {};
 var F = {q:saved.q||"",regions:saved.regions||[],states:saved.states||[],mods:saved.mods||[],types:saved.types||[],reg:saved.reg||"any",
-  newgrad:!!saved.newgrad,recent:!!saved.recent,statuses:saved.statuses||[],settings:saved.settings||[],hot:!!saved.hot,maxd:saved.maxd||"any",anchor:saved.anchor||0,sort:saved.sort||"near",shortlist:!!saved.shortlist};
+  newgrad:!!saved.newgrad,recent:!!saved.recent,statuses:saved.statuses||[],settings:saved.settings||[],hot:!!saved.hot,st:saved.st||"",maxd:saved.maxd||"any",anchor:saved.anchor||0,sort:saved.sort||"near",shortlist:!!saved.shortlist};
 var stars = store("stars") || [];
 var PAGE = 36, shown = PAGE;
 var hidden = {};
@@ -165,7 +167,7 @@ function persist(){store("filters",F);store("stars",stars)}
 $("fanchor").innerHTML = ANCHORS.map(function(a,i){return '<option value="'+i+'">'+esc(a[0])+'</option>'}).join("");
 function syncInputs(){
   $("fanchor").value=String(F.anchor);$("fmaxd").value=F.maxd;$("fsort").value=F.sort;$("fq").value=F.q;
-  $("fnewgrad").checked=F.newgrad;$("frecent").checked=F.recent;$("fhot").checked=F.hot;$("fshort").checked=F.shortlist;
+  $("fst").value=F.st;$("fnewgrad").checked=F.newgrad;$("frecent").checked=F.recent;$("fhot").checked=F.hot;$("fshort").checked=F.shortlist;
   qsa('input[name=freg]').forEach(function(r){r.checked=r.value===F.reg});
   qsa(".rail .chip").forEach(function(c){c.setAttribute("aria-pressed",String(F[c.dataset.k].indexOf(c.dataset.v)>-1))});
   qsa("#quick .chip").forEach(function(c){c.setAttribute("aria-pressed",String(+c.dataset.anchor===+F.anchor))});
@@ -188,9 +190,12 @@ $("fsort").addEventListener("change",function(){F.sort=this.value;render()});
 $("fnewgrad").addEventListener("change",function(){F.newgrad=this.checked;shown=PAGE;render()});
 $("frecent").addEventListener("change",function(){F.recent=this.checked;shown=PAGE;render()});
 $("fhot").addEventListener("change",function(){F.hot=this.checked;shown=PAGE;render()});
+$("fst").addEventListener("change",function(){F.st=this.value;shown=PAGE;render()});
+function stateOptions(){var c={};DATA.jobs.forEach(function(j){if(!hidden[j.id]){var s=String(j.state||"").toUpperCase();c[s]=(c[s]||0)+1}});
+  $("fst").innerHTML='<option value="">Any state</option>'+Object.keys(c).sort(function(a,b){return (STATENAMES[a]||a).localeCompare(STATENAMES[b]||b)}).map(function(s){return '<option value="'+esc(s)+'">'+esc(STATENAMES[s]||s)+' ('+c[s]+')</option>'}).join("");$("fst").value=F.st}
 $("fshort").addEventListener("change",function(){F.shortlist=this.checked;shown=PAGE;render()});
 qsa('input[name=freg]').forEach(function(r){r.addEventListener("change",function(){F.reg=this.value;shown=PAGE;render()})});
-function resetF(){F.q="";F.regions=[];F.states=[];F.mods=[];F.types=[];F.reg="any";F.newgrad=false;F.recent=false;F.maxd="any";F.shortlist=false;F.statuses=[];F.settings=[];F.hot=false}
+function resetF(){F.q="";F.regions=[];F.states=[];F.mods=[];F.types=[];F.reg="any";F.newgrad=false;F.recent=false;F.maxd="any";F.shortlist=false;F.statuses=[];F.settings=[];F.hot=false;F.st=""}
 function clearFilters(){resetF();shown=PAGE;syncInputs();render()}
 $("fclear").addEventListener("click",clearFilters);
 
@@ -204,6 +209,7 @@ function matches(j,skip){
   if(skip!=="mods"&&F.mods.length&&!(j.mods||[]).some(function(m){return F.mods.indexOf(m)>-1}))return false;
   if(skip!=="regions"&&F.regions.length&&F.regions.indexOf(j.region)<0)return false;
   if(skip!=="states"&&F.states.length&&F.states.indexOf(stateKey(j))<0)return false;
+  if(F.st&&String(j.state||"").toUpperCase()!==F.st)return false;
   if(skip!=="types"&&F.types.length&&F.types.indexOf(j.type)<0)return false;
   if(skip!=="statuses"&&F.statuses.length&&F.statuses.indexOf(statusOf(j))<0)return false;
   if(skip!=="settings"&&F.settings.length&&F.settings.indexOf(settingOf(j))<0)return false;
@@ -229,7 +235,7 @@ function tiles(){
   var all=DATA.jobs.filter(function(j){return !hidden[j.id]});
   var a=ANCHORS[F.anchor]||ANCHORS[0];
   var near=all.filter(function(j){var d=distOf(j);return d!=null&&d<=30}).length;
-  var only=function(o){return JSON.stringify({regions:F.regions,states:F.states,mods:F.mods,types:F.types,reg:F.reg,newgrad:F.newgrad,recent:F.recent,maxd:F.maxd,q:F.q,shortlist:F.shortlist,statuses:F.statuses,settings:F.settings,hot:F.hot})===JSON.stringify(Object.assign({regions:[],states:[],mods:[],types:[],reg:"any",newgrad:false,recent:false,maxd:"any",q:"",shortlist:false,statuses:[],settings:[],hot:false},o))};
+  var only=function(o){return JSON.stringify({regions:F.regions,states:F.states,mods:F.mods,types:F.types,reg:F.reg,newgrad:F.newgrad,recent:F.recent,maxd:F.maxd,q:F.q,shortlist:F.shortlist,statuses:F.statuses,settings:F.settings,hot:F.hot,st:F.st})===JSON.stringify(Object.assign({regions:[],states:[],mods:[],types:[],reg:"any",newgrad:false,recent:false,maxd:"any",q:"",shortlist:false,statuses:[],settings:[],hot:false,st:""},o))};
   var big=[
     ["all","lead",all.length,"Listings",only({})],
     ["near","",near,"Within 30 miles of "+a[0].replace(", White Plains",""),only({maxd:"30"})],
@@ -308,7 +314,7 @@ $("hotjobs").addEventListener("click",function(e){
   qsa('[data-star="'+id.replace(/"/g,'')+'"]').forEach(function(x){x.setAttribute("aria-pressed",String(i<0));x.textContent=i<0?"★ Saved":"☆ Save"});persist();
 });
 function render(){
-  persist();tiles();chipCounts();renderHot();
+  persist();stateOptions();tiles();chipCounts();renderHot();
   var list=DATA.jobs.filter(function(j){return matches(j)});
   list.forEach(function(j){j._d=distOf(j)});
   var RANK={verified:0,unverified:1,search:2};

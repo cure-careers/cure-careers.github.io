@@ -1,5 +1,5 @@
 /* CURE Jobs offline support. Raise VERSION whenever app files change. */
-const VERSION = "cure-jobs-v3";
+const VERSION = "cure-jobs-v4";
 const SHELL = ["./","index.html","app.css","app.js","config.js","jszip.min.js","manifest.webmanifest",
   "icons/icon-192.png","icons/icon-512.png","icons/apple-touch-icon.png","icons/favicon-32.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
