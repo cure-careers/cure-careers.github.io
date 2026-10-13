@@ -458,7 +458,7 @@ if("serviceWorker" in navigator)window.addEventListener("load",function(){naviga
 
 /* ================= resume builder ================= */
 var R0={name:"",city:"",phone:"",email:"",link:"",regStatus:"",spi:"",creds:"",bls:false,posType:"",area:"",env:"",priority:"",start:"",relocate:"",travel:"",extra:"",
-  level:"student",skills:"",exams:[{n:"",r:""}],equip:"",sites:[{site:"",loc:"",dates:"",hours:"",desc:""}],program:"Diagnostic Medical Sonography",gradDate:"",awards:"",otherEdu:"",related:"",refFmt:"request",refs:""};
+  level:"student",skills:"",exams:[{n:"",r:""}],equip:"",sites:[{site:"",loc:"",dates:"",hours:"",desc:""}],program:"Diagnostic Medical Sonography, Vascular Technology & Echocardiography",startDate:"",gradDate:"",specialty:"",awards:"",otherEdu:"",related:"",refFmt:"request",refs:""};
 var R=Object.assign({},R0,store("resume")||{});
 if(!R.exams||!R.exams.length)R.exams=[{n:"",r:""}];if(!R.sites||!R.sites.length)R.sites=[{site:"",loc:"",dates:"",hours:"",desc:""}];
 var POL=store("polish")||null;
@@ -497,7 +497,9 @@ function drawForm(){
   sec("6","Clinical proficiency",'<p class="callout">Add each examination you performed and rate your current supervised skill level. The number never appears; the builder turns it into accurate wording.</p><div id="exrows" style="display:flex;flex-direction:column;gap:8px">'+exRows()+'</div><button type="button" class="btn ghost wide" id="add-ex">+ Add another examination</button>')+
   sec("7","Ultrasound equipment",fld("equip","Machines and systems, with manufacturer and model when known",area("equip","GE LOGIQ E10, Philips EPIQ, Siemens Acuson Sequoia, PACS")))+
   sec("8","Ultrasound experience",'<p class="callout">Clinical externship belongs here, clearly labeled as supervised clinical experience.</p><div id="siterows" style="display:flex;flex-direction:column;gap:10px">'+siteRows()+'</div><button type="button" class="btn ghost wide" id="add-site">+ Add another site</button>')+
-  sec("9","Ultrasound education",'<div class="rgrid">'+fld("program","CURE program",sel("program",[["Diagnostic Medical Sonography","Diagnostic Medical Sonography"],["Vascular Technology","Vascular Technology"],["Echocardiography","Echocardiography"]]))+fld("gradDate","Graduation date (or expected)",inp("gradDate","October 2026"))+'</div><p class="status">Listed as Center for Ultrasound Research and Education (CURE), White Plains, NY.</p>')+
+  sec("9","Ultrasound education",'<p class="callout">Career Services wording. Your resume lists the CURE certificate, the 2400 hour program description, your externship specialty and the Mindray Z5, Z6 and Z60 systems exactly as Career Services requires. Fill in your dates and specialty.</p>'+
+    '<div class="rgrid">'+fld("startDate","Date started (month and year)",inp("startDate","September 2024"))+fld("gradDate","Date completed or expected (month and year)",inp("gradDate","October 2026"))+
+    fld("specialty","Clinical externship specialty",'<input id="r-specialty" data-k="specialty" type="text" list="speclist" value="'+esc(R.specialty)+'" placeholder="general and vascular ultrasound"><datalist id="speclist"><option value="general ultrasound"><option value="vascular ultrasound"><option value="general and vascular ultrasound"><option value="OB/GYN ultrasound"><option value="echocardiography"><option value="general, OB/GYN and vascular ultrasound"></datalist>')+'</div>')+
   sec("10","Awards and honors",fld("awards","Only honors actually received, one per line",area("awards","Perfect attendance, Quarter 6")))+
   sec("11","Other education",fld("otherEdu","Degrees, colleges or certifications, one per line",area("otherEdu","Associate of Science, Biology, Westchester Community College, 2022")))+
   sec("12","Other related experience",fld("related","Prior healthcare or related work",area("related","Medical assistant, ABC Family Practice, 2021 to 2024. Roomed patients, took vital signs, documented histories.")))+
@@ -544,7 +546,7 @@ function objective(){
   var a=AREA[R.area]||"diagnostic ultrasound",typ=(R.posType&&R.posType!=="any")?R.posType+" ":"",env=ENV[R.env]?" in a "+ENV[R.env]+" setting":"",pri=PRI[R.priority]||"";
   var creds=R.creds.trim(),who;
   if(R.level==="experienced")who=(creds?"Registered sonographer ("+fix(creds)+")":"Sonographer")+" with clinical experience in "+a+",";
-  else{who=(R.level==="newgrad"?"Recent graduate":"Student")+" of the "+R.program+" program at the Center for Ultrasound Research and Education (CURE)";
+  else{who=(R.level==="newgrad"?"Recent graduate":"Student")+" of the Diagnostic Medical Sonography, Vascular Technology and Echocardiography certificate program at the Center for Ultrasound Research and Education (CURE)";
     if(R.regStatus==="registered"&&creds)who+=", "+fix(creds)+",";else if(R.regStatus==="eligible"||R.regStatus==="spi")who+=", registry eligible,";}
   var s=who+" seeking a "+typ+(AREA[R.area]?a+" ":"sonography ")+"position"+env+pri+".";
   var av=[];if(R.start.trim())av.push("Available to start "+R.start.trim()+".");
@@ -592,8 +594,12 @@ function model(){
       var b=P&&P.sites&&P.sites[i]?P.sites[i]:tidyBullets(s.desc);if(b.length)M.push({t:"ul",items:b});
     });}
   M.push({t:"h",x:"Ultrasound Education"});
-  M.push({t:"sub",x:"Center for Ultrasound Research and Education (CURE), White Plains, NY",r:R.gradDate.trim()?(R.level==="student"?"Expected "+R.gradDate.trim():R.gradDate.trim()):""});
-  M.push({t:"p",x:R.program+" Program"});
+  /* Career Services standard wording (verbatim); only dates and specialty vary */
+  var d1=R.startDate.trim(),d2=R.gradDate.trim();if(d2&&R.level==="student")d2="Expected "+d2;
+  M.push({t:"sub",x:"The CURE Center for Ultrasound Research & Education \u2013 White Plains, NY",r:d1&&d2?d1+" \u2013 "+d2:(d1||d2||"[Dates Attended month/year]")});
+  M.push({t:"p",x:"Certificate \u2013 Diagnostic Medical Sonography, Vascular Technology & Echocardiography"});
+  M.push({t:"p",x:"2400-hour intensive program with 1500 hours of combined didactic and lab coursework including: medical terminology, patient care, physics, abdomen, small parts, OBGYN, vascular, and cardiac ultrasound. 900-hour clinical externship specializing in "+(R.specialty.trim()||"[Your Specialty]")+"."});
+  M.push({t:"p",x:"Equipment: Mindray Z5, Z6, Z60"});
   var aw=lines(R.awards);if(aw.length){M.push({t:"h",x:"Awards and Honors"});M.push({t:"ul",items:aw.map(fix)})}
   var oe=lines(R.otherEdu);if(oe.length){M.push({t:"h",x:"Other Education"});M.push({t:"ul",items:oe})}
   var rel=P&&P.related&&P.related.length?P.related:tidyBullets(R.related);if(rel.length){M.push({t:"h",x:"Related Experience"});M.push({t:"ul",items:rel})}
