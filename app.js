@@ -458,7 +458,7 @@ if("serviceWorker" in navigator)window.addEventListener("load",function(){naviga
 
 /* ================= resume builder ================= */
 var R0={name:"",city:"",phone:"",email:"",link:"",regStatus:"",spi:"",creds:"",bls:false,posType:"",area:"",env:"",priority:"",start:"",relocate:"",travel:"",extra:"",
-  level:"student",skills:"",exams:[{n:"",r:""}],equip:"",sites:[{site:"",loc:"",dates:"",hours:"",desc:""}],program:"Diagnostic Medical Sonography, Vascular Technology & Echocardiography",startDate:"",gradDate:"",specialty:"",awards:"",otherEdu:"",related:"",refFmt:"request",refs:""};
+  level:"student",skills:"",exams:[{n:"",r:""}],equip:"",sites:[{site:"",loc:"",dates:"",hours:"",desc:""}],program:"Diagnostic Medical Sonography, Vascular Technology, Echocardiography",startDate:"",gradDate:"",specialty:"",awards:"",otherEdu:"",related:"",refFmt:"request",refs:""};
 var R=Object.assign({},R0,store("resume")||{});
 if(!R.exams||!R.exams.length)R.exams=[{n:"",r:""}];if(!R.sites||!R.sites.length)R.sites=[{site:"",loc:"",dates:"",hours:"",desc:""}];
 var POL=store("polish")||null;
@@ -546,7 +546,7 @@ function objective(){
   var a=AREA[R.area]||"diagnostic ultrasound",typ=(R.posType&&R.posType!=="any")?R.posType+" ":"",env=ENV[R.env]?" in a "+ENV[R.env]+" setting":"",pri=PRI[R.priority]||"";
   var creds=R.creds.trim(),who;
   if(R.level==="experienced")who=(creds?"Registered sonographer ("+fix(creds)+")":"Sonographer")+" with clinical experience in "+a+",";
-  else{who=(R.level==="newgrad"?"Recent graduate":"Student")+" of the Diagnostic Medical Sonography, Vascular Technology and Echocardiography certificate program at the Center for Ultrasound Research and Education (CURE)";
+  else{who=(R.level==="newgrad"?"Recent graduate":"Student")+" of the Diagnostic Medical Sonography, Vascular Technology, Echocardiography certificate program at the Center for Ultrasound Research and Education (CURE)";
     if(R.regStatus==="registered"&&creds)who+=", "+fix(creds)+",";else if(R.regStatus==="eligible"||R.regStatus==="spi")who+=", registry eligible,";}
   var s=who+" seeking a "+typ+(AREA[R.area]?a+" ":"sonography ")+"position"+env+pri+".";
   var av=[];if(R.start.trim())av.push("Available to start "+R.start.trim()+".");
@@ -597,7 +597,7 @@ function model(){
   /* Career Services standard wording (verbatim); only dates and specialty vary */
   var d1=R.startDate.trim(),d2=R.gradDate.trim();if(d2&&R.level==="student")d2="Expected "+d2;
   M.push({t:"sub",x:"The CURE Center for Ultrasound Research & Education \u2013 White Plains, NY",r:d1&&d2?d1+" \u2013 "+d2:(d1||d2||"[Dates Attended month/year]")});
-  M.push({t:"p",x:"Certificate \u2013 Diagnostic Medical Sonography, Vascular Technology & Echocardiography"});
+  M.push({t:"p",x:"Certificate \u2013 Diagnostic Medical Sonography, Vascular Technology, Echocardiography"});
   M.push({t:"p",x:"2400-hour intensive program with 1500 hours of combined didactic and lab coursework including: medical terminology, patient care, physics, abdomen, small parts, OBGYN, vascular, and cardiac ultrasound. 900-hour clinical externship specializing in "+(R.specialty.trim()||"[Your Specialty]")+"."});
   M.push({t:"p",x:"Equipment: Mindray Z5, Z6, Z60"});
   var aw=lines(R.awards);if(aw.length){M.push({t:"h",x:"Awards and Honors"});M.push({t:"ul",items:aw.map(fix)})}
