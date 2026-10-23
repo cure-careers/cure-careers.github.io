@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#133D55">
+<title>CURE Student Resource Portal has moved</title>
+<script>
+/* The portal moved to a secure address that requires sign in. Remove the old app helper, then forward. */
+try{if(navigator.serviceWorker){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister()})})}}catch(e){}
+location.replace("https://cure-portal.pages.dev/"+location.hash);
+</script>
+<meta http-equiv="refresh" content="0; url=https://cure-portal.pages.dev/">
+</head>
+<body style="font-family:Arial,sans-serif;padding:24px;background:#133D55;color:#fff">
+<h1 style="font-size:22px">The CURE Student Resource Portal has moved</h1>
+<p>The portal now requires sign in. Continue to <a style="color:#F2B33D" href="https://cure-portal.pages.dev/">cure-portal.pages.dev</a>.</p>
+<p>Students sign in with their Student ID and the 4 digit PIN from the Registrar. Staff and faculty use their @cure.edu Google account.</p>
+</body>
+</html>
